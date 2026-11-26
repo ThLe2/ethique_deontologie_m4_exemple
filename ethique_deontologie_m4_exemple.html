@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exemple commenté — Un client pressé</title>
+<style>
+:root{--prune:#8C1E70;--prune-fonce:#5E1349;--prune-clair:#F4E6EE;--accent:#C77BAA;
+ --vert:#283C28;--gris:#3C3C3C;--gris-moyen:#8A7A85;--filet:#E8DCE5;--creme:#FAF6F8;
+ --ok:#2F7A4F;--ko:#B23B3B;--amb:#B5852A;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--creme);color:var(--gris);
+ font-family:"Nunito","Segoe UI",Helvetica,Arial,sans-serif;font-size:16px;line-height:1.62}
+.wrap{max-width:900px;margin:0 auto;padding:0 18px 60px}
+header.bandeau{background:var(--prune-fonce);color:#fff;padding:18px 0;border-bottom:4px solid var(--accent)}
+header.bandeau .wrap{padding-bottom:0}
+.chapitre{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#EAD3E3}
+.chapitre span{color:var(--accent);margin:0 6px}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:27px;line-height:1.25;margin:8px 0 4px;color:#fff}
+.sous{color:#EAD3E3;font-size:14.5px;margin:0}
+h2{font-family:Georgia,"Times New Roman",serif;font-size:20px;color:var(--prune-fonce);
+ margin:34px 0 0;padding-bottom:8px;border-bottom:2px solid var(--filet)}
+h2 .num{color:var(--accent);margin-right:8px}
+h3{font-size:15px;color:var(--vert);margin:20px 0 8px;letter-spacing:.02em}
+.carte{background:#fff;border:1px solid var(--filet);border-radius:10px;padding:20px 22px;margin:18px 0;
+ box-shadow:0 1px 2px rgba(94,19,73,.05)}
+.enc{background:var(--prune-clair);border-left:5px solid var(--prune);padding:14px 18px;
+ border-radius:0 8px 8px 0;margin:18px 0;font-size:15.2px}
+.enc .t{display:block;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
+ font-weight:800;color:var(--prune-fonce);margin-bottom:6px}
+.enc.al{background:#FBF4F4;border-left-color:var(--ko)}.enc.al .t{color:var(--ko)}
+.enc.ci{background:#FCF8F0;border-left-color:var(--amb)}.enc.ci .t{color:#8A6418}
+.situ{background:#FCF9FB;border:1px dashed var(--filet);border-radius:8px;padding:16px 18px;margin:16px 0;font-size:15.2px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+.duo>div{background:#fff;border:1px solid var(--filet);border-radius:9px;padding:15px 17px;font-size:14.8px}
+.duo .h{font-weight:800;color:var(--prune-fonce);margin-bottom:7px;font-size:14.5px}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.tri>div{background:#fff;border:1px solid var(--filet);border-radius:9px;padding:14px 15px;font-size:14.3px}
+.quad{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.quad>div{background:#fff;border:1px solid var(--filet);border-radius:9px;padding:12px 13px;font-size:13.6px}
+.quad .h{font-weight:800;color:var(--prune-fonce);margin-bottom:6px;font-size:13px;
+ text-transform:uppercase;letter-spacing:.04em}
+.tri .h{font-weight:800;color:var(--prune-fonce);margin-bottom:6px;font-size:13.5px;
+ text-transform:uppercase;letter-spacing:.05em}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.8px;background:#fff}
+th,td{border:1px solid var(--filet);padding:9px 12px;text-align:left}
+thead th{background:var(--prune-clair);color:var(--prune-fonce);font-size:13.5px}
+tbody th{font-weight:600;color:var(--gris)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.tot td,tr.tot th{background:#FBF3F8;font-weight:800;color:var(--prune-fonce)}
+.dl{display:inline-flex;align-items:center;gap:9px;background:var(--prune);color:#fff;text-decoration:none;
+ padding:11px 20px;border-radius:8px;font-weight:700;font-size:15px;margin:20px 0 4px}
+.dl:hover{background:var(--prune-fonce)}
+ol.q{padding-left:0;list-style:none;counter-reset:q}
+ol.q>li{margin:16px 0;padding-left:38px;position:relative}
+ol.q>li::before{counter-increment:q;content:counter(q);position:absolute;left:0;top:1px;
+ width:26px;height:26px;border-radius:50%;background:var(--prune-clair);color:var(--prune-fonce);
+ font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+b,strong{color:var(--vert)}
+footer{text-align:center;font-size:12.5px;color:var(--gris-moyen);padding:26px 18px 12px;
+ border-top:1px solid var(--filet);margin-top:44px}
+@media(max-width:860px){.quad{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.duo,.tri,.quad{grid-template-columns:1fr}h1{font-size:22px}}
+@media print{body{background:#fff}.dl{display:none}header.bandeau{background:#5E1349 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+.mail{background:#fff;border:1px solid var(--filet);border-radius:10px;padding:0;margin:16px 0;overflow:hidden}
+.mail .ent{background:#F7F1F5;border-bottom:1px solid var(--filet);padding:10px 16px;font-size:14px}
+.mail .ent b{color:var(--prune-fonce)}
+.mail .txt{padding:14px 18px;font-size:15.2px}
+.mail p{margin:0 0 10px}
+.err{background:#FDECEC;border-bottom:2px solid var(--ko);padding:0 2px;border-radius:3px}
+.cor{display:none;background:#E9F6EE;border-bottom:2px solid var(--ok);padding:0 2px;border-radius:3px;color:var(--ok);font-weight:700}
+.nf{font-size:11px;vertical-align:super;font-weight:800;color:var(--ko)}
+body.vu .err{text-decoration:line-through;background:none;border:0;color:var(--gris-moyen)}
+body.vu .cor{display:inline}
+.btn{display:inline-flex;align-items:center;gap:9px;background:var(--prune);color:#fff;border:0;
+ padding:12px 22px;border-radius:8px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.btn:hover{background:var(--prune-fonce)}
+.liste{display:none}body.vu .liste{display:block}
+</style></head>
+<body>
+<header class="bandeau"><div class="wrap">
+ <div class="chapitre">Éthique et déontologie <span>/</span> Module 4</div><h1>Un client pressé</h1><p class="sous">Exemple commenté — LCB-FT : le cadre et les opérations atypiques</p>
+</div></header>
+<div class="wrap">
+
+<h2><span class="num">1 ·</span>La situation</h2>
+<div class="carte">
+<p>Nadia Ferhat est conseillère clientèle dans une agence bancaire. M. Vasseur, artisan, client depuis vingt ans, enchaîne les demandes ce mois-ci. Lisez ce que Nadia lui répond, puis ce qu'elle dit à sa collègue. Repérez les six phrases à corriger, puis affichez la correction.</p>
+<div class="mail">
+ <div class="ent"><b>Au guichet, puis en salle de pause — propos de Nadia Ferhat</b></div>
+ <div class="txt"><p>« Bonjour Monsieur Vasseur, encore un dépôt ? »</p><p>« <span class="err">9 500 €, c'est sous les 10 000 € : c'est le troisième dépôt de ce genre ce mois-ci, mais pas besoin de regarder.</span> <span class="cor">C'est votre troisième dépôt d'espèces ce mois-ci : j'ai besoin de comprendre d'où viennent ces fonds et de recueillir des justificatifs.</span><span class="nf">1</span> »</p><p>« <span class="err">Vos billets de 20 € contre des billets de 200 € ? Bien sûr, c'est plus pratique à transporter.</span> <span class="cor">Échanger un tel volume de petites coupures contre de grosses coupures est une opération inhabituelle : pouvez-vous m'en expliquer la raison ?</span><span class="nf">2</span> »</p><p>« <span class="err">Un prêt de votre propre société au Luxembourg pour l'apport ? Parfait, ça justifie les fonds.</span> <span class="cor">Un prêt consenti par une société que vous contrôlez ne justifie pas l'origine des fonds : j'ai besoin des comptes de cette société et de l'origine de sa trésorerie.</span><span class="nf">3</span> »</p><p>« <span class="err">Rembourser votre crédit auto par anticipation, en espèces ? Aucun souci.</span> <span class="cor">Un remboursement anticipé en espèces d'un tel montant appelle des justificatifs de l'origine des fonds avant d'être accepté.</span><span class="nf">4</span> »</p><p>« <span class="err">Le rachat total de l'assurance-vie de 80 000 € ouverte il y a deux mois ? Les pénalités, c'est votre affaire.</span> <span class="cor">Un rachat aussi rapide, avec des pénalités, n'a pas de logique économique apparente : je dois en connaître la raison.</span><span class="nf">5</span> »</p><p>À sa collègue : « <span class="err">Je ne fais rien remonter au correspondant LCB-FT : il est client depuis vingt ans, je le connais.</span> <span class="cor">Ancienneté ou pas, je transmets mon analyse au correspondant LCB-FT, qui décidera d'une éventuelle déclaration.</span><span class="nf">6</span> »</p></div>
+</div>
+<button class="btn" id="voir" onclick="document.body.classList.add('vu');this.style.display='none'">Afficher la correction</button>
+</div>
+
+<div class="liste">
+<h2><span class="num">2 ·</span>Les corrections, une par une</h2>
+<div class="carte">
+<table><thead><tr><th>N°</th><th>Point</th><th>Le raisonnement</th></tr></thead><tbody><tr><td><b>1</b></td><td>Le fractionnement ignoré</td><td>Des dépôts répétés juste sous un seuil sont la marque du <b>schtroumpfage</b>. La vigilance ne dépend d'aucun seuil, et les espèces cumulées au-delà de 10 000 € par mois font de toute façon l'objet d'une communication systématique à Tracfin.</td></tr><tr><td><b>2</b></td><td>Le raffinage accepté</td><td>Échanger des petites coupures contre des grosses réduit le volume d'espèces à transporter ou à cacher : c'est le <b>raffinage</b>, signal classique du trafic de stupéfiants.</td></tr><tr><td><b>3</b></td><td>L'auto-prêt validé</td><td>Se prêter à soi-même, via une société que l'on contrôle, des fonds d'origine illicite pour justifier leur arrivée : c'est l'<b>auto-prêt</b>. Le prêt ne justifie rien ; c'est l'origine de la trésorerie du prêteur qui compte.</td></tr><tr><td><b>4</b></td><td>Le remboursement anticipé sans question</td><td>Rembourser un crédit par anticipation avec des fonds d'origine inconnue, notamment en espèces, permet d'<b>intégrer</b> de l'argent sale dans un patrimoine. L'origine se justifie avant l'opération.</td></tr><tr><td><b>5</b></td><td>Le rachat précoce sans logique</td><td>Verser une grosse somme sur un contrat d'assurance-vie puis la racheter vite, malgré les pénalités : le client récupère un chèque d'un assureur, d'apparence propre. C'est une typologie d'<b>empilement</b>.</td></tr><tr><td><b>6</b></td><td>L'ancienneté comme excuse</td><td>La relation d'affaires n'exonère pas de la <b>vigilance constante</b>. Un faisceau d'opérations atypiques impose un <b>examen renforcé</b> et une transmission au correspondant ou au déclarant Tracfin.</td></tr></tbody></table>
+</div>
+
+<h2><span class="num">3 ·</span>Ce qu'il faut en retenir</h2>
+<div class="carte"><div class="enc"><span class="t">CE QUE CET ÉCHANGE MONTRE</span>Pris un par un, chaque geste de M. Vasseur peut sembler banal. Ensemble, fractionnement, raffinage, auto-prêt, remboursement anticipé et rachat précoce forment un faisceau qui devait alerter.</div><div class="enc al"><span class="t">CE QU'ELLE RISQUE</span>Une sanction disciplinaire, une sanction de l'ACPR contre l'établissement et, si elle a apporté son concours en connaissance de cause, des poursuites pour blanchiment : jusqu'à 10 ans et 750 000 € lorsque l'auteur use des facilités de son activité professionnelle.</div><div class="enc ci"><span class="t">LA RÈGLE OPÉRATIONNELLE</span>Comprendre chaque opération, demander l'origine des fonds, documenter, et transmettre au correspondant LCB-FT dès que l'explication manque.</div>
+</div>
+</div>
+
+<footer>TMK Performances - N° Siret : 49841924100027 - Code NAF : 8559A</footer>
+</div>
+</body></html>
